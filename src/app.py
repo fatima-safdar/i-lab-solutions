@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, render_template_string, url_for
+from twilio.twiml.messaging_response import MessagingResponse
 from config.settings import Config
 from src.ai_agent import AIAgent
 from src.whatsapp_client import WhatsAppClient
@@ -23,7 +24,6 @@ HTML_TEMPLATE = """
         .user-msg { background: #d9fdd3; color: #111b21; align-self: flex-end; border-top-right-radius: 2px; }
         .bot-msg { background: #ffffff; color: #111b21; align-self: flex-start; border-top-left-radius: 2px; }
         
-        /* Links Blue aur Underlined */
         .bot-msg a { 
             color: #007bff; 
             text-decoration: underline; 
@@ -83,11 +83,11 @@ def verify_webhook():
 
 @app.route('/webhook', methods=['POST'])
 def receive_message():
-    data = request.get_json()
-    try:
-        msg = data['entry'][0]['changes'][0]['value']['messages'][0]
-        WhatsAppClient.send_message(msg['from'], ai_agent.generate_reply(msg['text']['body']))
-    except: pass
-    return jsonify({"status": "success"}), 200
+    incoming_msg = request.form.get('Body', '')
+    reply_text = ai_agent.generate_reply(incoming_msg)
+
+    resp = MessagingResponse()
+    resp.message(reply_text)
+    return str(resp), 200, {'Content-Type': 'text/xml'}
 
 if __name__ == '__main__': app.run(port=Config.PORT, debug=True)
