@@ -1,24 +1,27 @@
-import requests
+from twilio.rest import Client
 from config.settings import Config
+
 
 class WhatsAppClient:
     @staticmethod
     def send_message(to_number, text_body):
-        url = f"https://graph.facebook.com/v18.0/{Config.PHONE_NUMBER_ID}/messages"
-        headers = {
-            "Authorization": f"Bearer {Config.WHATSAPP_TOKEN}",
-            "Content-Type": "application/json"
-        }
-        payload = {
-            "messaging_product": "whatsapp",
-            "to": to_number,
-            "type": "text",
-            "text": {"body": text_body}
-        }
-        
-        response = requests.post(url, json=payload, headers=headers)
-        if response.status_code != 200:
-            print(f"WhatsApp API Error: {response.text}")
+        """
+        Send an outbound WhatsApp message via Twilio.
+        to_number should be in the format: whatsapp:+92xxxxxxxxxx
+        """
+        try:
+            client = Client(Config.TWILIO_ACCOUNT_SID, Config.TWILIO_AUTH_TOKEN)
+
+            if not to_number.startswith("whatsapp:"):
+                to_number = f"whatsapp:{to_number}"
+
+            message = client.messages.create(
+                from_=Config.TWILIO_WHATSAPP_NUMBER,
+                to=to_number,
+                body=text_body
+            )
+            print(f"Message sent to {to_number}, SID: {message.sid}")
+            return True
+        except Exception as e:
+            print(f"Twilio API Error: {e}")
             return False
-        print(f"Message sent to {to_number}")
-        return True
