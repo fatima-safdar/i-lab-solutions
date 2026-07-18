@@ -3,22 +3,9 @@ from twilio.twiml.messaging_response import MessagingResponse
 from config.settings import Config
 from src.ai_agent import AIAgent
 from src.whatsapp_client import WhatsAppClient
-import re
 
 app = Flask(__name__)
 ai_agent = AIAgent()
-
-
-def format_for_whatsapp(text):
-    """
-    Convert the bot's HTML-formatted replies (meant for the web chat UI)
-    into WhatsApp-friendly plain text formatting.
-    """
-    # <strong>text</strong>  ->  *text*
-    text = re.sub(r'<strong>(.*?)</strong>', r'*\1*', text)
-    # <a href='URL' ...>label</a>  ->  label: URL
-    text = re.sub(r"<a href='([^']*)'[^>]*>(.*?)</a>", r'\2: \1', text)
-    return text
 
 HTML_TEMPLATE = """
 <!DOCTYPE html>
@@ -97,7 +84,7 @@ def verify_webhook():
 @app.route('/webhook', methods=['POST'])
 def receive_message():
     incoming_msg = request.form.get('Body', '')
-    reply_text = format_for_whatsapp(ai_agent.generate_reply(incoming_msg))
+    reply_text = ai_agent.generate_reply(incoming_msg)
 
     resp = MessagingResponse()
     resp.message(reply_text)
