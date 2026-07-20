@@ -1,5 +1,6 @@
 import re
 
+
 class AIAgent:
     def __init__(self):
         pass
@@ -14,7 +15,7 @@ class AIAgent:
         # 1. Welcome / Greeting Message
         if self._has_word(msg, ["hello", "hi", "hlo", "assalam", "hey", "aoa", "greetings"]):
             return (
-                "Hello! Welcome to i-Labsolution AI Agent Support.\n"
+                "Hello! Welcome to i-Lab Solutions AI Agent Support.\n"
                 "We take care of your business and your future.\n\n"
                 "How can we assist you today? Please choose an option by replying with its number:\n\n"
                 "1️⃣ Our IT & Digital Services\n"
@@ -74,7 +75,7 @@ class AIAgent:
         # 5. Social Media & Contact Info
         elif self._has_word(msg, ["contact", "social", "facebook", "youtube", "link", "number", "email"]) or msg == "4":
             return (
-                "*Connect With i-Labsolution*\n\n"
+                "*Connect With i-Lab Solutions*\n\n"
                 "*Facebook:* https://www.facebook.com/ilabssolution\n"
                 "*YouTube:* https://www.youtube.com/@i-LabSolutions\n"
                 "*TikTok:* https://www.tiktok.com/@ilabsolutions\n"
@@ -88,7 +89,7 @@ class AIAgent:
         # 6. Location
         elif self._has_word(msg, ["location", "address", "office", "map", "where", "sahiwal"]) or msg == "5":
             return (
-                "*i-Labsolution Office Location*\n\n"
+                "*i-Lab Solutions Office Location*\n\n"
                 "*Address:* Sahiwal, Punjab, Pakistan.\n\n"
                 "*Google Maps:* https://www.google.com/maps/search/?api=1&query=i-Labsolution+Sahiwal"
             )
@@ -96,7 +97,7 @@ class AIAgent:
         # 7. Timings
         elif self._has_word(msg, ["timing", "timings", "time", "open", "close"]) or msg == "6":
             return (
-                "*i-Labsolution Office Timings*\n"
+                "*i-Lab Solutions Office Timings*\n"
                 "We are open 7 days a week to support your business goals.\n\n"
                 "*Monday to Sunday:* 09:00 AM – 06:00 PM"
             )
@@ -104,7 +105,7 @@ class AIAgent:
         # Default Fallback
         else:
             return (
-                "To find more information about i-Labsolution, please choose an option from our menu:\n\n"
+                "To find more information about i-Lab Solutions, please choose an option from our menu:\n\n"
                 "1️⃣ Services | 2️⃣ Courses | 3️⃣ Internships | 4️⃣ Contact Info | 5️⃣ Location | 6️⃣ Timings\n\n"
                 "Or get in touch directly via email at info@i-labsolution.com."
             )
